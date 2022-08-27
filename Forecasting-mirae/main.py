@@ -7,7 +7,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os 
 
-from preparing import preparing
 from dataset import MiraeDataset
 from model import lstm_encoder_decoder
 from torch.utils.data import DataLoader
@@ -22,19 +21,10 @@ def fix_seed(seed):
 fix_seed(0)
 
 # data load - test
-##################### 변 경 필 요 #####################
-""" input과 output, 그리고 이에 해당하는 시간의 npy 파일 경로를 입력해주시면 됩니다."""
-time = np.load('')
-input_x = np.load('')
-input_y = np.load('')
-##################### 변 경 필 요 #####################
-
-preparing(input_x, input_y, time)
 x = np.load('./test_data/x.npy')
 y = np.load('./test_data/y.npy')
 
-
-# data load - train
+# data load - train: 데이터 정규화에 사용
 x_train = np.load('./train_data/x_train.npy')
 y_train = np.load('./train_data/y_train.npy')
 
