@@ -294,3 +294,29 @@ for i in range(5):
 #     plt.title(f'Result of Test data Top {i+1} (Min): {profile_total_loss[idx]/12:.5f}', fontsize=25) # 바꿔줘야 함
 #     plt.legend()
 #     plt.savefig(f'./result_22/result_min_profile_{i+1}_{idx}.png')
+
+plt.rcParams["figure.figsize"] = (20,12)
+for i in range(5):
+    idx = final_loss_top[i*10][0]
+    actual_idx = inputs[idx][:,0]
+    outputs_idx = outputs[idx][:,0].cpu()
+    input_time = test_time[idx][0:60]
+    output_time = test_time[idx][60:63]
+    for j in range(1, 8644): # label 값 전체 추가
+        actual_idx = np.append(actual_idx, inputs[idx+j][-1,0])
+        input_time = np.append(input_time, test_time[idx+j][59])
+    for k in range(1, 8641): # output 전체 추가
+        outputs_idx = np.append(outputs_idx, outputs[idx+k][-1,0].cpu())
+        output_time = np.append(output_time, test_time[idx+k][[59]])
+    plt.clf()
+    plt.plot(input_time, actual_idx,'b', label='x')
+    plt.plot(output_time, outputs_idx, 'r', ms=5, alpha=0.7, label='y_hat')
+    hfmt = dates.DateFormatter('%m/%d %H:%M:%S')
+    ax = plt.gca()
+    ax.xaxis.set_major_formatter(hfmt)
+    ax.xaxis.set_major_locator(dates.HourLocator())
+    ax.set_title(f'Result of Test data Top {i+1} (Max): {final_loss_top[i+10][1]/3:.5f}', fontsize=25)
+    # plt.legend(loc=2)
+    plt.xticks(rotation=45)
+    plt.show()
+    plt.savefig(f'./result_10S/result_max_{i+10}_{idx}.png')
