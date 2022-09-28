@@ -1,4 +1,4 @@
-import pandas as pd
+ import pandas as pd
 import numpy as np
 import pickle
 
@@ -7,7 +7,7 @@ INPUT_LENGTH = 72 # 72
 OUTPUT_LENGTH = 12 # 12
 INTERVAL_UNIT = 'H'
 EXTRA_UNIT = '10Min'
-THIRD_UNIT = None
+THIRD_UNIT = '10s'
 
 
 ## csv load
@@ -103,6 +103,16 @@ if INTERVAL_UNIT == 'H':
 
             ACB_df_3th = ACB_df.resample(rule=THIRD_UNIT, origin='end', closed='right').mean() / 1000. # w -> kw로 단위 변환
             
+            # 1시간 간격의 stat 먼저 빼주기
+            BT_1_df_3th['배터리#1호기.Bank Power'] -= BT_1_df_re['배터리#1호기.Bank Power'].values.repeat(360)
+            BT_2_df_3th['배터리#2호기.Bank Power'] -= BT_2_df_re['배터리#2호기.Bank Power'].values.repeat(360)
+            BT_3_df_3th['배터리#3호기.Bank Power'] -= BT_3_df_re['배터리#3호기.Bank Power'].values.repeat(360)
+            
+            PV_df_3th['태양광시스템.인버터 AC전력'] -= PV_df_re['태양광시스템.인버터 AC전력'].values.repeat(360)
+            
+            ACB_df_3th['ACB 계전기.TOTAL 전력'] -= ACB_df_re['ACB 계전기.TOTAL 전력'].values.repeat(360)
+            
+            #10분 간격의 stat 빼주기
             BT_1_df_3th['배터리#1호기.Bank Power'] -= BT_1_df_ex['배터리#1호기.Bank Power'].values.repeat(60)
             BT_2_df_3th['배터리#2호기.Bank Power'] -= BT_2_df_ex['배터리#2호기.Bank Power'].values.repeat(60)
             BT_3_df_3th['배터리#3호기.Bank Power'] -= BT_3_df_ex['배터리#3호기.Bank Power'].values.repeat(60)
