@@ -103,13 +103,13 @@ if INTERVAL_UNIT == 'H':
 
             ACB_df_3th = ACB_df.resample(rule=THIRD_UNIT, origin='end', closed='right').mean() / 1000. # w -> kw로 단위 변환
             
-            BT_1_df_3th['배터리#1호기.Bank Power'] -= BT_1_df_ex['배터리#1호기.Bank Power'].values.repeat(6)
-            BT_2_df_3th['배터리#2호기.Bank Power'] -= BT_2_df_ex['배터리#2호기.Bank Power'].values.repeat(6)
-            BT_3_df_3th['배터리#3호기.Bank Power'] -= BT_3_df_ex['배터리#3호기.Bank Power'].values.repeat(6)
+            BT_1_df_3th['배터리#1호기.Bank Power'] -= BT_1_df_ex['배터리#1호기.Bank Power'].values.repeat(60)
+            BT_2_df_3th['배터리#2호기.Bank Power'] -= BT_2_df_ex['배터리#2호기.Bank Power'].values.repeat(60)
+            BT_3_df_3th['배터리#3호기.Bank Power'] -= BT_3_df_ex['배터리#3호기.Bank Power'].values.repeat(60)
             
-            PV_df_3th['태양광시스템.인버터 AC전력'] -= PV_df_ex['태양광시스템.인버터 AC전력'].values.repeat(6)
+            PV_df_3th['태양광시스템.인버터 AC전력'] -= PV_df_ex['태양광시스템.인버터 AC전력'].values.repeat(60)
             
-            ACB_df_3th['ACB 계전기.TOTAL 전력'] -= ACB_df_ex['ACB 계전기.TOTAL 전력'].values.repeat(6)
+            ACB_df_3th['ACB 계전기.TOTAL 전력'] -= ACB_df_ex['ACB 계전기.TOTAL 전력'].values.repeat(60)
         
 elif INTERVAL_UNIT == '10s':
     BT_1_df_re = BT_1_df.resample(rule=INTERVAL_UNIT, origin='end', closed='right').last()
