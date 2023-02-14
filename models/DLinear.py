@@ -49,39 +49,144 @@ class Model(nn.Module):
         self.decompsition = series_decomp(kernel_size)
         self.individual = configs.individual
         self.channels = configs.enc_in
-
+        self.version = configs.ver
+        
         if self.individual:
-            self.Linear_Seasonal = nn.ModuleList()
-            self.Linear_Trend = nn.ModuleList()
+            self.Seasonal_Linear = nn.ModuleList()
+            seTrend_Linearend = nn.ModuleList()
             
             for i in range(self.channels):
-                self.Linear_Seasonal.append(nn.Linear(self.seq_len,self.pred_len))
-                self.Linear_Trend.append(nn.Linear(self.seq_len,self.pred_len))
+                self.Seasonal_Linear.append(nn.Linear(self.seq_len,self.pred_len))
+                seTrend_Linearend.append(nn.Linear(self.seq_len,self.pred_len))
 
                 # Use this two lines if you want to visualize the weights
-                # self.Linear_Seasonal[i].weight = nn.Parameter((1/self.seq_len)*torch.ones([self.pred_len,self.seq_len]))
-                # self.Linear_Trend[i].weight = nn.Parameter((1/self.seq_len)*torch.ones([self.pred_len,self.seq_len]))
+                # self.Seasonal_Linear[i].weight = nn.Parameter((1/self.seq_len)*torch.ones([self.pred_len,self.seq_len]))
+                # seTrend_Linearend[i].weight = nn.Parameter((1/self.seq_len)*torch.ones([self.pred_len,self.seq_len]))
         else:
-            self.Linear_Seasonal = nn.Linear(self.seq_len,self.pred_len)
-            self.Linear_Trend = nn.Linear(self.seq_len,self.pred_len)
+            if self.version == 'B':
+                self.Seasonal_Linear = nn.Linear(self.seq_len, self.pred_len)
+                self.Trend_Linear = nn.Linear(self.seq_len, self.pred_len)
+                
+            elif self.version == 'TLC':
+                self.Seasonal_Linear = nn.Linear(self.seq_len*2, self.pred_len)
+                self.Trend_Linear = nn.Linear(self.seq_len*2, self.pred_len)
+                self.time_Linear = nn.Linear(72*4, 72, bias=False)
             
-            # Use this two lines if you want to visualize the weights
-            # self.Linear_Seasonal.weight = nn.Parameter((1/self.seq_len)*torch.ones([self.pred_len,self.seq_len]))
-            # self.Linear_Trend.weight = nn.Parameter((1/self.seq_len)*torch.ones([self.pred_len,self.seq_len]))
+            elif self.version == 'D':
+                self.Seasonal_Linear1 = nn.Linear(self.seq_len, 336)
+                self.Trend_Linear1 = nn.Linear(self.seq_len, 336)
+                self.Seasonal_Linear2 = nn.Linear(336, self.pred_len)
+                self.Trend_Linear2 = nn.Linear(336, self.pred_len)
+                self.relu = nn.ReLU()
 
-    def forward(self, x):
+            elif self.version == 'TLS':
+                self.Seasonal_Linear = nn.Linear(self.seq_len, self.pred_len)
+                self.Trend_Linear = nn.Linear(self.seq_len, self.pred_len)
+                self.time_Linear = nn.Linear(72*4, 72, bias=False)
+            
+            elif self.version == 'TCC':
+                self.Seasonal_Linear = nn.Linear(self.seq_len*2, self.pred_len)
+                self.Trend_Linear = nn.Linear(self.seq_len*2, self.pred_len)
+                self.time_Conv = nn.Conv1d(in_channels=4, out_channels=1, kernel_size=1, bias=False)
+            
+            elif self.version == 'TCS':
+                self.Seasonal_Linear = nn.Linear(self.seq_len, self.pred_len)
+                self.Trend_Linear = nn.Linear(self.seq_len, self.pred_len)
+                self.time_Conv = nn.Conv1d(in_channels=4, out_channels=1, kernel_size=1, bias=False)
+                
+            elif self.version == 'TCCC':
+                self.Seasonal_Linear = nn.Linear(self.seq_len, self.pred_len)
+                self.Trend_Linear = nn.Linear(self.seq_len, self.pred_len)
+                self.Seasonal_power_time_Conv = nn.Conv1d(in_channels=2, out_channels=1, kernel_size=1)
+                # self.Trend_power_time_Conv = nn.Conv1d(in_channels=2, out_channels=1, kernel_size=1)
+                self.time_Conv = nn.Conv1d(in_channels=4, out_channels=1, kernel_size=1, bias=False)
+            
+            elif self.version == 'TPE' or 'TPS':
+                self.Seasonal_Linear = nn.Linear(self.seq_len, self.pred_len)
+                self.Trend_Linear = nn.Linear(self.seq_len, self.pred_len)
+                self.time_Conv = nn.Conv1d(in_channels=4, out_channels=1, kernel_size=1, bias=False)
+                # self.Seasonal_power_Linear = nn.Linear(self.seq_len, self.seq_len)
+                self.Trend_power_Linear = nn.Linear(self.seq_len, self.seq_len)
+                
+    def forward(self, x, x_mark):
         # x: [Batch, Input length, Channel]
         seasonal_init, trend_init = self.decompsition(x)
-        seasonal_init, trend_init = seasonal_init.permute(0,2,1), trend_init.permute(0,2,1)
         if self.individual:
             seasonal_output = torch.zeros([seasonal_init.size(0),seasonal_init.size(1),self.pred_len],dtype=seasonal_init.dtype).to(seasonal_init.device)
             trend_output = torch.zeros([trend_init.size(0),trend_init.size(1),self.pred_len],dtype=trend_init.dtype).to(trend_init.device)
             for i in range(self.channels):
-                seasonal_output[:,i,:] = self.Linear_Seasonal[i](seasonal_init[:,i,:])
-                trend_output[:,i,:] = self.Linear_Trend[i](trend_init[:,i,:])
+                seasonal_output[:,i,:] = self.Seasonal_Linear[i](seasonal_init[:,i,:])
+                trend_output[:,i,:] = self.Trend_Linear[i](trend_init[:,i,:])
         else:
-            seasonal_output = self.Linear_Seasonal(seasonal_init)
-            trend_output = self.Linear_Trend(trend_init)
+            
+            if self.version == 'B':
+                seasonal_output = self.Seasonal_Linear(seasonal_init.permute(0,2,1)).permute(0,2,1)
+                trend_output = self.Trend_Linear(trend_init.permute(0,2,1)).permute(0,2,1)
+            
+            elif self.version == 'TLC':
+                x_mark = x_mark.reshape(-1, 72*4)
+                time = self.time_Linear(x_mark).unsqueeze(2)
+                seasonal_init = torch.cat([seasonal_init, time], dim=1)
+                trend_init = torch.cat([trend_init, time], dim=1)
+                seasonal_output = self.Seasonal_Linear(seasonal_init.permute(0,2,1)).permute(0,2,1)
+                trend_output = self.Trend_Linear(trend_init.permute(0,2,1)).permute(0,2,1)
+                
+            elif self.version == 'TLS':
+                x_mark = x_mark.reshape(-1, 72*4)
+                time = self.time_Linear(x_mark).unsqueeze(2)
+                seasonal_init = seasonal_init + time
+                trend_init = trend_init + time
+                seasonal_output = self.Seasonal_Linear(seasonal_init.permute(0,2,1)).permute(0,2,1)
+                trend_output = self.Trend_Linear(trend_init.permute(0,2,1)).permute(0,2,1)
+            
+            elif self.version == 'TCC':
+                time = self.time_Conv(x_mark.permute(0,2,1)).permute(0,2,1)
+                seasonal_init = torch.cat([seasonal_init, time], dim=1)
+                trend_init = torch.cat([trend_init, time], dim=1)
+                seasonal_output = self.Seasonal_Linear(seasonal_init.permute(0,2,1)).permute(0,2,1)
+                trend_output = self.Trend_Linear(trend_init.permute(0,2,1)).permute(0,2,1)
+            
+            elif self.version == 'TCS':
+                time = self.time_Conv(x_mark.permute(0,2,1)).permute(0,2,1)
+                seasonal_init = seasonal_init + time
+                trend_init = trend_init + time
+                seasonal_output = self.Seasonal_Linear(seasonal_init.permute(0,2,1)).permute(0,2,1)
+                trend_output = self.Trend_Linear(trend_init.permute(0,2,1)).permute(0,2,1)
+                    
+            elif self.version == 'TCCC':
+                time = self.time_Conv(x_mark.permute(0,2,1)).permute(0,2,1)
+                seasonal_init = torch.cat([seasonal_init, time], dim=2)
+                # trend_init = torch.cat([trend_init, time], dim=2)
+                seasonal_init = self.Seasonal_power_time_Conv(seasonal_init.permute(0,2,1))
+                # trend_init = self.Trend_power_time_Conv(trend_init.permute(0,2,1))
+                seasonal_output = self.Seasonal_Linear(seasonal_init).permute(0,2,1)
+                trend_output = self.Trend_Linear(trend_init.permute(0,2,1)).permute(0,2,1)
+            
+            elif self.version == 'TPE':
+                time = self.time_Conv(x_mark.permute(0,2,1)).permute(0,2,1)
+                # seasonal_power = self.Seasonal_power_Linear(seasonal_init.permute(0,2,1)).permute(0,2,1)
+                trend_power = self.Trend_power_Linear(trend_init.permute(0,2,1)).permute(0,2,1)
+                # seasonal_init = seasonal_power * time
+                trend_init = trend_power * time
+                seasonal_output = self.Seasonal_Linear(seasonal_init.permute(0,2,1)).permute(0,2,1)
+                trend_output = self.Trend_Linear(trend_init.permute(0,2,1)).permute(0,2,1)
+            
+            elif self.version == 'TPS':
+                time = self.time_Conv(x_mark.permute(0,2,1)).permute(0,2,1)
+                # seasonal_power = self.Seasonal_power_Linear(seasonal_init.permute(0,2,1)).permute(0,2,1)
+                trend_power = self.Trend_power_Linear(trend_init.permute(0,2,1)).permute(0,2,1)
+                # seasonal_init = seasonal_power + time
+                trend_init = trend_power + time
+                seasonal_output = self.Seasonal_Linear(seasonal_init.permute(0,2,1)).permute(0,2,1)
+                trend_output = self.Trend_Linear(trend_init.permute(0,2,1)).permute(0,2,1)
+            
+            else:
+                seasonal_init = self.Seasonal_Linear1(seasonal_init.permute(0,2,1)).permute(0,2,1)
+                trend_init = self.Trend_Linear1(trend_init.permute(0,2,1)).permute(0,2,1)
+                seasonal_init = self.relu(seasonal_init)
+                trend_init = self.relu(trend_init)
+                seasonal_output = self.Seasonal_Linear2(seasonal_init.permute(0,2,1)).permute(0,2,1)
+                trend_output = self.Trend_Linear2(trend_init.permute(0,2,1)).permute(0,2,1)
 
         x = seasonal_output + trend_output
-        return x.permute(0,2,1) # to [Batch, Output length, Channel]
+        return x # to [Batch, Output length, Channel]
