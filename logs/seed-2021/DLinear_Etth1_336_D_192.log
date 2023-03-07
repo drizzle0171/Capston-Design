@@ -1,0 +1,74 @@
+Args in experiment:
+Namespace(ver='D', is_training=1, model_id='ETTh1_336_192', model='DLinear', data='ETTh1', root_path='/nas/datahub/ETT/', data_path='ETTh1.csv', features='M', target='OT', freq='h', checkpoints='./checkpoints/', seq_len=336, label_len=48, pred_len=192, individual=False, embed_type=0, enc_in=7, dec_in=7, c_out=7, d_model=512, n_heads=8, e_layers=2, d_layers=1, d_ff=2048, moving_avg=25, factor=1, distil=True, dropout=0.05, embed='timeF', activation='gelu', output_attention=False, do_predict=False, num_workers=10, itr=1, train_epochs=10, batch_size=32, patience=3, learning_rate=0.005, des='Exp', loss='mse', lradj='type1', use_amp=False, use_gpu=True, gpu=0, use_multi_gpu=False, devices='0,1,2,3', test_flop=False)
+Use GPU: cuda:0
+>>>>>>>start training : ETTh1_336_192_DLinear_ETTh1_ftM_sl336_ll48_pl192_dm512_nh8_el2_dl1_df2048_fc1_ebtimeF_dtTrue_Exp_0>>>>>>>>>>>>>>>>>>>>>>>>>>
+train 8113
+val 2689
+test 2689
+	iters: 100, epoch: 1 | loss: 0.3743708
+	speed: 0.0198s/iter; left time: 48.2468s
+	iters: 200, epoch: 1 | loss: 0.4411573
+	speed: 0.0064s/iter; left time: 14.9504s
+Epoch: 1 cost time: 3.027777671813965
+Epoch: 1, Steps: 253 | Train Loss: 0.4410824 Vali Loss: 0.9860677 Test Loss: 0.4703110
+Validation loss decreased (inf --> 0.986068).  Saving model ...
+Updating learning rate to 0.005
+	iters: 100, epoch: 2 | loss: 0.4056922
+	speed: 0.0376s/iter; left time: 81.9748s
+	iters: 200, epoch: 2 | loss: 0.4841144
+	speed: 0.0065s/iter; left time: 13.5863s
+Epoch: 2 cost time: 2.3086111545562744
+Epoch: 2, Steps: 253 | Train Loss: 0.4133560 Vali Loss: 1.1316940 Test Loss: 0.5103450
+EarlyStopping counter: 1 out of 3
+Updating learning rate to 0.0025
+	iters: 100, epoch: 3 | loss: 0.3995336
+	speed: 0.0383s/iter; left time: 73.7363s
+	iters: 200, epoch: 3 | loss: 0.3656393
+	speed: 0.0061s/iter; left time: 11.1636s
+Epoch: 3 cost time: 2.4160733222961426
+Epoch: 3, Steps: 253 | Train Loss: 0.3794525 Vali Loss: 0.9660348 Test Loss: 0.4517650
+Validation loss decreased (0.986068 --> 0.966035).  Saving model ...
+Updating learning rate to 0.00125
+	iters: 100, epoch: 4 | loss: 0.3972256
+	speed: 0.0385s/iter; left time: 64.4133s
+	iters: 200, epoch: 4 | loss: 0.3726029
+	speed: 0.0059s/iter; left time: 9.2630s
+Epoch: 4 cost time: 2.226653814315796
+Epoch: 4, Steps: 253 | Train Loss: 0.3504162 Vali Loss: 0.9709076 Test Loss: 0.4559594
+EarlyStopping counter: 1 out of 3
+Updating learning rate to 0.000625
+	iters: 100, epoch: 5 | loss: 0.3563792
+	speed: 0.0362s/iter; left time: 51.3737s
+	iters: 200, epoch: 5 | loss: 0.3453887
+	speed: 0.0069s/iter; left time: 9.0474s
+Epoch: 5 cost time: 2.258753776550293
+Epoch: 5, Steps: 253 | Train Loss: 0.3296760 Vali Loss: 0.9488527 Test Loss: 0.4777445
+Validation loss decreased (0.966035 --> 0.948853).  Saving model ...
+Updating learning rate to 0.0003125
+	iters: 100, epoch: 6 | loss: 0.3047872
+	speed: 0.0390s/iter; left time: 45.4284s
+	iters: 200, epoch: 6 | loss: 0.3206808
+	speed: 0.0066s/iter; left time: 7.0410s
+Epoch: 6 cost time: 2.435458183288574
+Epoch: 6, Steps: 253 | Train Loss: 0.3140642 Vali Loss: 0.9804671 Test Loss: 0.4777156
+EarlyStopping counter: 1 out of 3
+Updating learning rate to 0.00015625
+	iters: 100, epoch: 7 | loss: 0.3197288
+	speed: 0.0378s/iter; left time: 34.5566s
+	iters: 200, epoch: 7 | loss: 0.2663296
+	speed: 0.0067s/iter; left time: 5.4630s
+Epoch: 7 cost time: 2.374859571456909
+Epoch: 7, Steps: 253 | Train Loss: 0.3051227 Vali Loss: 0.9816100 Test Loss: 0.4766639
+EarlyStopping counter: 2 out of 3
+Updating learning rate to 7.8125e-05
+	iters: 100, epoch: 8 | loss: 0.3556560
+	speed: 0.0374s/iter; left time: 24.6868s
+	iters: 200, epoch: 8 | loss: 0.2925506
+	speed: 0.0063s/iter; left time: 3.5245s
+Epoch: 8 cost time: 2.27236008644104
+Epoch: 8, Steps: 253 | Train Loss: 0.3003954 Vali Loss: 0.9779298 Test Loss: 0.4822049
+EarlyStopping counter: 3 out of 3
+Early stopping
+>>>>>>>testing : ETTh1_336_192_DLinear_ETTh1_ftM_sl336_ll48_pl192_dm512_nh8_el2_dl1_df2048_fc1_ebtimeF_dtTrue_Exp_0<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+test 2689
+mse:0.47774478793144226, mae:0.46699056029319763

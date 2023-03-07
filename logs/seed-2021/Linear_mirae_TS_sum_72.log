@@ -1,0 +1,88 @@
+Args in experiment:
+Namespace(ver='TS', is_training=1, model_id='mirae_Linear', model='Linear', data='mirae', root_path='./data/ETT/', data_path='ETTh1.csv', features='M', target='OT', freq='h', checkpoints='./checkpoints/', seq_len=72, label_len=48, pred_len=12, individual=False, embed_type=0, enc_in=7, dec_in=7, c_out=7, d_model=512, n_heads=8, e_layers=2, d_layers=1, d_ff=2048, moving_avg=25, factor=1, distil=True, dropout=0.05, embed='timeF', activation='gelu', output_attention=False, do_predict=False, num_workers=10, itr=1, train_epochs=20, batch_size=32, patience=3, learning_rate=0.005, des='Exp', loss='mse', lradj='type1', use_amp=False, use_gpu=True, gpu=0, use_multi_gpu=False, devices='0,1,2,3', test_flop=False)
+Use GPU: cuda:0
+>>>>>>>start training : mirae_Linear_Linear_mirae_ftM_sl72_ll48_pl12_dm512_nh8_el2_dl1_df2048_fc1_ebtimeF_dtTrue_Exp_0>>>>>>>>>>>>>>>>>>>>>>>>>>
+train 4552
+val 975
+test 976
+	iters: 100, epoch: 1 | loss: 0.0072088
+	speed: 0.0477s/iter; left time: 130.7227s
+Epoch: 1 cost time: 5.361913442611694
+Epoch: 1, Steps: 142 | Train Loss: 0.0121696 Vali Loss: 0.0038018 Test Loss: 0.0035016
+Validation loss decreased (inf --> 0.003802).  Saving model ...
+Updating learning rate to 0.005
+	iters: 100, epoch: 2 | loss: 0.0103483
+	speed: 0.0492s/iter; left time: 127.7448s
+Epoch: 2 cost time: 2.6866707801818848
+Epoch: 2, Steps: 142 | Train Loss: 0.0081258 Vali Loss: 0.0024685 Test Loss: 0.0023118
+Validation loss decreased (0.003802 --> 0.002469).  Saving model ...
+Updating learning rate to 0.0025
+	iters: 100, epoch: 3 | loss: 0.0099455
+	speed: 0.0441s/iter; left time: 108.3406s
+Epoch: 3 cost time: 2.656383514404297
+Epoch: 3, Steps: 142 | Train Loss: 0.0071905 Vali Loss: 0.0023107 Test Loss: 0.0023999
+Validation loss decreased (0.002469 --> 0.002311).  Saving model ...
+Updating learning rate to 0.00125
+	iters: 100, epoch: 4 | loss: 0.0107484
+	speed: 0.0473s/iter; left time: 109.4577s
+Epoch: 4 cost time: 2.666456460952759
+Epoch: 4, Steps: 142 | Train Loss: 0.0064869 Vali Loss: 0.0019585 Test Loss: 0.0020899
+Validation loss decreased (0.002311 --> 0.001958).  Saving model ...
+Updating learning rate to 0.000625
+	iters: 100, epoch: 5 | loss: 0.0048300
+	speed: 0.0500s/iter; left time: 108.7351s
+Epoch: 5 cost time: 2.603031873703003
+Epoch: 5, Steps: 142 | Train Loss: 0.0063920 Vali Loss: 0.0019584 Test Loss: 0.0021025
+Validation loss decreased (0.001958 --> 0.001958).  Saving model ...
+Updating learning rate to 0.0003125
+	iters: 100, epoch: 6 | loss: 0.0114574
+	speed: 0.0410s/iter; left time: 83.2202s
+Epoch: 6 cost time: 2.009514093399048
+Epoch: 6, Steps: 142 | Train Loss: 0.0062165 Vali Loss: 0.0019435 Test Loss: 0.0020575
+Validation loss decreased (0.001958 --> 0.001944).  Saving model ...
+Updating learning rate to 0.00015625
+	iters: 100, epoch: 7 | loss: 0.0044639
+	speed: 0.0466s/iter; left time: 88.0557s
+Epoch: 7 cost time: 2.6316170692443848
+Epoch: 7, Steps: 142 | Train Loss: 0.0061175 Vali Loss: 0.0019183 Test Loss: 0.0020450
+Validation loss decreased (0.001944 --> 0.001918).  Saving model ...
+Updating learning rate to 7.8125e-05
+	iters: 100, epoch: 8 | loss: 0.0056867
+	speed: 0.0461s/iter; left time: 80.6131s
+Epoch: 8 cost time: 2.5834100246429443
+Epoch: 8, Steps: 142 | Train Loss: 0.0060953 Vali Loss: 0.0019165 Test Loss: 0.0020194
+Validation loss decreased (0.001918 --> 0.001916).  Saving model ...
+Updating learning rate to 3.90625e-05
+	iters: 100, epoch: 9 | loss: 0.0062166
+	speed: 0.0456s/iter; left time: 73.2136s
+Epoch: 9 cost time: 2.5225749015808105
+Epoch: 9, Steps: 142 | Train Loss: 0.0060554 Vali Loss: 0.0019192 Test Loss: 0.0020260
+EarlyStopping counter: 1 out of 3
+Updating learning rate to 1.953125e-05
+	iters: 100, epoch: 10 | loss: 0.0072848
+	speed: 0.0464s/iter; left time: 67.8373s
+Epoch: 10 cost time: 2.738250970840454
+Epoch: 10, Steps: 142 | Train Loss: 0.0060474 Vali Loss: 0.0018892 Test Loss: 0.0020039
+Validation loss decreased (0.001916 --> 0.001889).  Saving model ...
+Updating learning rate to 9.765625e-06
+	iters: 100, epoch: 11 | loss: 0.0080802
+	speed: 0.0458s/iter; left time: 60.5374s
+Epoch: 11 cost time: 2.5383214950561523
+Epoch: 11, Steps: 142 | Train Loss: 0.0060397 Vali Loss: 0.0019109 Test Loss: 0.0020212
+EarlyStopping counter: 1 out of 3
+Updating learning rate to 4.8828125e-06
+	iters: 100, epoch: 12 | loss: 0.0112919
+	speed: 0.0483s/iter; left time: 56.9941s
+Epoch: 12 cost time: 2.9502766132354736
+Epoch: 12, Steps: 142 | Train Loss: 0.0060426 Vali Loss: 0.0019204 Test Loss: 0.0020216
+EarlyStopping counter: 2 out of 3
+Updating learning rate to 2.44140625e-06
+	iters: 100, epoch: 13 | loss: 0.0038957
+	speed: 0.0507s/iter; left time: 52.5299s
+Epoch: 13 cost time: 2.8653299808502197
+Epoch: 13, Steps: 142 | Train Loss: 0.0060363 Vali Loss: 0.0019161 Test Loss: 0.0020223
+EarlyStopping counter: 3 out of 3
+Early stopping
+>>>>>>>testing : mirae_Linear_Linear_mirae_ftM_sl72_ll48_pl12_dm512_nh8_el2_dl1_df2048_fc1_ebtimeF_dtTrue_Exp_0<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+test 976
+mse:0.002003881148993969, mae:0.03215024992823601

@@ -1,0 +1,34 @@
+Args in experiment:
+Namespace(ver='TPM', is_training=1, model_id='mirae_Linear', model='DLinear_T', data='mirae', root_path='./data/ETT/', data_path='ETTh1.csv', features='M', target='OT', freq='h', checkpoints='./checkpoints/', seq_len=72, label_len=48, pred_len=12, individual=False, embed_type=0, enc_in=7, dec_in=7, c_out=7, d_model=512, n_heads=8, e_layers=2, d_layers=1, d_ff=2048, moving_avg=25, factor=1, distil=True, dropout=0.05, embed='timeF', activation='gelu', output_attention=False, do_predict=False, num_workers=10, itr=1, train_epochs=20, batch_size=32, patience=3, learning_rate=0.005, des='Exp', loss='mse', lradj='type1', use_amp=False, use_gpu=True, gpu=0, use_multi_gpu=False, devices='0,1,2,3', test_flop=False)
+Use GPU: cuda:0
+>>>>>>>start training : mirae_Linear_DLinear_T_mirae_ftM_sl72_ll48_pl12_dm512_nh8_el2_dl1_df2048_fc1_ebtimeF_dtTrue_Exp_0>>>>>>>>>>>>>>>>>>>>>>>>>>
+train 4552
+val 975
+test 976
+	iters: 100, epoch: 1 | loss: 0.0185446
+	speed: 0.0280s/iter; left time: 76.7237s
+Epoch: 1 cost time: 3.1001439094543457
+Epoch: 1, Steps: 142 | Train Loss: 0.0531789 Vali Loss: 0.0091711 Test Loss: 0.0093559
+Validation loss decreased (inf --> 0.009171).  Saving model ...
+Updating learning rate to 0.005
+	iters: 100, epoch: 2 | loss: 0.0137389
+	speed: 0.0373s/iter; left time: 96.8866s
+Epoch: 2 cost time: 1.8904082775115967
+Epoch: 2, Steps: 142 | Train Loss: 0.0140614 Vali Loss: 0.0127178 Test Loss: 0.0112018
+EarlyStopping counter: 1 out of 3
+Updating learning rate to 0.0025
+	iters: 100, epoch: 3 | loss: 0.0067233
+	speed: 0.0429s/iter; left time: 105.5143s
+Epoch: 3 cost time: 1.851050853729248
+Epoch: 3, Steps: 142 | Train Loss: 0.0104893 Vali Loss: 0.0129614 Test Loss: 0.0106675
+EarlyStopping counter: 2 out of 3
+Updating learning rate to 0.00125
+	iters: 100, epoch: 4 | loss: 0.0119958
+	speed: 0.0414s/iter; left time: 95.7471s
+Epoch: 4 cost time: 2.0352816581726074
+Epoch: 4, Steps: 142 | Train Loss: 0.0091513 Vali Loss: 0.0096370 Test Loss: 0.0079293
+EarlyStopping counter: 3 out of 3
+Early stopping
+>>>>>>>testing : mirae_Linear_DLinear_T_mirae_ftM_sl72_ll48_pl12_dm512_nh8_el2_dl1_df2048_fc1_ebtimeF_dtTrue_Exp_0<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+test 976
+mse:0.009356, mae:0.07847

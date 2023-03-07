@@ -1,0 +1,70 @@
+Args in experiment:
+Namespace(ver='D', is_training=1, model_id='mirae_Linear', model='NLinear', data='mirae', root_path='./data/ETT/', data_path='ETTh1.csv', features='M', target='OT', freq='h', checkpoints='./checkpoints/', seq_len=72, label_len=48, pred_len=12, individual=False, embed_type=0, enc_in=7, dec_in=7, c_out=7, d_model=512, n_heads=8, e_layers=2, d_layers=1, d_ff=2048, moving_avg=25, factor=1, distil=True, dropout=0.05, embed='timeF', activation='gelu', output_attention=False, do_predict=False, num_workers=10, itr=1, train_epochs=20, batch_size=32, patience=3, learning_rate=0.005, des='Exp', loss='mse', lradj='type1', use_amp=False, use_gpu=True, gpu=0, use_multi_gpu=False, devices='0,1,2,3', test_flop=False)
+Use GPU: cuda:0
+>>>>>>>start training : mirae_Linear_NLinear_mirae_ftM_sl72_ll48_pl12_dm512_nh8_el2_dl1_df2048_fc1_ebtimeF_dtTrue_Exp_0>>>>>>>>>>>>>>>>>>>>>>>>>>
+train 4552
+val 975
+test 976
+	iters: 100, epoch: 1 | loss: 0.0051353
+	speed: 0.0215s/iter; left time: 58.9915s
+Epoch: 1 cost time: 2.4090993404388428
+Epoch: 1, Steps: 142 | Train Loss: 0.0074087 Vali Loss: 0.0020741 Test Loss: 0.0022398
+Validation loss decreased (inf --> 0.002074).  Saving model ...
+Updating learning rate to 0.005
+	iters: 100, epoch: 2 | loss: 0.0034481
+	speed: 0.0356s/iter; left time: 92.6152s
+Epoch: 2 cost time: 1.7413198947906494
+Epoch: 2, Steps: 142 | Train Loss: 0.0051462 Vali Loss: 0.0017154 Test Loss: 0.0016718
+Validation loss decreased (0.002074 --> 0.001715).  Saving model ...
+Updating learning rate to 0.0025
+	iters: 100, epoch: 3 | loss: 0.0042200
+	speed: 0.0321s/iter; left time: 78.8625s
+Epoch: 3 cost time: 1.512401819229126
+Epoch: 3, Steps: 142 | Train Loss: 0.0043805 Vali Loss: 0.0016841 Test Loss: 0.0015091
+Validation loss decreased (0.001715 --> 0.001684).  Saving model ...
+Updating learning rate to 0.00125
+	iters: 100, epoch: 4 | loss: 0.0050620
+	speed: 0.0337s/iter; left time: 77.9934s
+Epoch: 4 cost time: 1.6247248649597168
+Epoch: 4, Steps: 142 | Train Loss: 0.0040357 Vali Loss: 0.0014606 Test Loss: 0.0014519
+Validation loss decreased (0.001684 --> 0.001461).  Saving model ...
+Updating learning rate to 0.000625
+	iters: 100, epoch: 5 | loss: 0.0018514
+	speed: 0.0360s/iter; left time: 78.2398s
+Epoch: 5 cost time: 1.6317138671875
+Epoch: 5, Steps: 142 | Train Loss: 0.0038727 Vali Loss: 0.0014587 Test Loss: 0.0014185
+Validation loss decreased (0.001461 --> 0.001459).  Saving model ...
+Updating learning rate to 0.0003125
+	iters: 100, epoch: 6 | loss: 0.0019747
+	speed: 0.0359s/iter; left time: 72.8726s
+Epoch: 6 cost time: 1.6351125240325928
+Epoch: 6, Steps: 142 | Train Loss: 0.0037870 Vali Loss: 0.0014708 Test Loss: 0.0014318
+EarlyStopping counter: 1 out of 3
+Updating learning rate to 0.00015625
+	iters: 100, epoch: 7 | loss: 0.0016653
+	speed: 0.0331s/iter; left time: 62.5662s
+Epoch: 7 cost time: 1.482816219329834
+Epoch: 7, Steps: 142 | Train Loss: 0.0037453 Vali Loss: 0.0014271 Test Loss: 0.0013981
+Validation loss decreased (0.001459 --> 0.001427).  Saving model ...
+Updating learning rate to 7.8125e-05
+	iters: 100, epoch: 8 | loss: 0.0044133
+	speed: 0.0381s/iter; left time: 66.4748s
+Epoch: 8 cost time: 1.6856005191802979
+Epoch: 8, Steps: 142 | Train Loss: 0.0037195 Vali Loss: 0.0014423 Test Loss: 0.0014152
+EarlyStopping counter: 1 out of 3
+Updating learning rate to 3.90625e-05
+	iters: 100, epoch: 9 | loss: 0.0036908
+	speed: 0.0327s/iter; left time: 52.5005s
+Epoch: 9 cost time: 1.5791316032409668
+Epoch: 9, Steps: 142 | Train Loss: 0.0037084 Vali Loss: 0.0014400 Test Loss: 0.0014062
+EarlyStopping counter: 2 out of 3
+Updating learning rate to 1.953125e-05
+	iters: 100, epoch: 10 | loss: 0.0047426
+	speed: 0.0352s/iter; left time: 51.5580s
+Epoch: 10 cost time: 1.5640623569488525
+Epoch: 10, Steps: 142 | Train Loss: 0.0037020 Vali Loss: 0.0014397 Test Loss: 0.0014071
+EarlyStopping counter: 3 out of 3
+Early stopping
+>>>>>>>testing : mirae_Linear_NLinear_mirae_ftM_sl72_ll48_pl12_dm512_nh8_el2_dl1_df2048_fc1_ebtimeF_dtTrue_Exp_0<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+test 976
+mse:0.001398, mae:0.02583
