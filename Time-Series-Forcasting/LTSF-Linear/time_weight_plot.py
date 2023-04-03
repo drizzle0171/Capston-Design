@@ -9,7 +9,7 @@ import torch
 import random
 
 
-def before_after(functioin):
+def before_after(function):
     before = np.load(f'./time_param/before_{function}.npy')
     after = np.load(f'./time_param/after_{function}.npy')
     plt.bar(list(range(72)), before.squeeze()[0], label=f'Before {function}')
@@ -22,38 +22,44 @@ def before_after(functioin):
 
 # color map
 def color_map():
-    for i in ['softmax', 'sigmoid', 'linear']:
-        origin = np.load(f'./time_param/time_{i}.npy')
-        for j in [random.randint(0, origin.shape[0]) for k in range(4)]:
-            time = origin[j]
-            
-            save_root = './time_weights_result/'
-            if not os.path.exists(save_root):
-                os.mkdir(save_root)
+    # for i in ['softmax', 'sigmoid', 'linear']:
+    origin = np.load(f'./time_param/time_feature.npy')
+    for j in [random.randint(0, origin.shape[0]) for k in range(6)]:
+        time = origin[j]
+        
+        save_root = './time_weights_result/'
+        if not os.path.exists(save_root):
+            os.mkdir(save_root)
 
-            fig,ax=plt.subplots()
-            # time = time.T
-            im=ax.imshow(time,cmap='plasma_r')
-            fig.colorbar(im,pad=0.03)
-            plt.title(f'Using {i}')
-            plt.xlabel('Seqeunce')
-            plt.ylabel('Batch')
-            plt.savefig(os.path.join(save_root,i + f'_{j}.jpg'),dpi=500)
-            plt.close()
+        fig,ax=plt.subplots()
+        # time = time.T
+        im=ax.imshow(time,cmap='plasma_r')
+        fig.colorbar(im,pad=0.03)
+        plt.title('Time Weight')
+        plt.xlabel('Seqeunce')
+        plt.ylabel('Batch')
+        plt.savefig(os.path.join(save_root,'time_feature' + f'_{j}.jpg'),dpi=500)
+        plt.close()
 
 # power with tempoal weight
 def power_temporal_weight():
-    for i in ['softmax']:
-        for j in [80, 100, 115, 122, 130]:
+    inputs = np.load('./time_param/input.npy').reshape(-1, 32, 72, 1)
+    trues = np.load('./time_param/true.npy').reshape(-1, 32, 12, 1)
+    pred = np.load('./time_param/pred.npy').reshape(-1, 32, 12, 1)
+    times = np.load('/nas/home/drizzle0171/Time-Series-Forcasting/time_final.npy')
+    test_len = int(len(times)*0.85)
+    times = times[test_len:][:1216].reshape(-1, 32, 84) # drop last
+    for i in ['feature']:
+        for j in [4, 9, 29, 31, 33, 37]:
             for k in range(32):
-                origin = np.load(f'./time_param/time_{i}.npy')
+                origin = np.load(f'./time_param/time_feature.npy')
                 time = origin[j][k].squeeze()
                 y_time = [0]*12
-                realtime_x = np.load('/nas/datahub/mirae/Data/time_H_index.npy')[j:j+32][k][:72]
-                realtime_y = np.load('/nas/datahub/mirae/Data/time_H_index.npy')[j:j+32][k][72:]
-                real_power = np.load('/nas/datahub/mirae/Data/x_H_total.npy')[j:j+32][k]
-                real_label = np.load('/nas/datahub/mirae/Data/y_H_total.npy')[j:j+32][k]
-                real_pred = np.load('./time_param/pred.npy')[j][k].squeeze() * 250.55362
+                realtime_x = times[j][k][:72]
+                realtime_y = times[j][k][72:]
+                real_power = inputs[j][k].squeeze() * (349.8758134722222 - 30.71108222222222) + 30.71108222222222
+                real_label = trues[j][k].squeeze() * (349.8758134722222 - 30.71108222222222) + 30.71108222222222
+                real_pred = pred[j][k].squeeze() * (349.8758134722222 - 30.71108222222222) + 30.71108222222222
 
                 save_root = './time_weights_result/'
                 if not os.path.exists(save_root):
@@ -66,7 +72,6 @@ def power_temporal_weight():
                                 height_ratios=[8, 2],
                                 #    width_ratios=[7.5,7.5]
                                 )
-                
                 ax1 = plt.subplot(gs[0])
                 ax1.plot(realtime_x, real_power, lw=5, color='b', label='Input power')
                 ax1.plot(realtime_y, real_label, lw=0, color='b', marker='o', label='Label power', alpha=0.7, markersize=10)
@@ -79,8 +84,8 @@ def power_temporal_weight():
                 ax1.legend(fontsize=17)
                 # ax1.set_yticks([50, 200], fontsize=25)
                 # ax2.set_xticks([0,0.2], fontsize=25)
-                ax1.set_ylim(50, 200)
-                ax2.set_ylim(0,0.2)
+                # ax1.set_ylim(50, 200)
+                # ax2.set_ylim(0,0.2)
                 ax1.tick_params(axis='y', labelsize=20)
                 ax2.tick_params(axis='y', labelsize=20)
 
@@ -102,6 +107,7 @@ def power_temporal_weight():
                 ax1.set_title("The power & temporal weight at the moment",fontsize=35, pad=20)     
                 plt.show()
                 plt.xticks(fontsize=20,rotation=45)
-                plt.savefig(os.path.join(save_root,i + f'_plot_{j}_{k}.jpg'),dpi=500)
+                plt.savefig(os.path.join(save_root, 'final' + f'plot_{j}_{k}.jpg'), dpi=500)
                 
 power_temporal_weight()
+# color_map()
